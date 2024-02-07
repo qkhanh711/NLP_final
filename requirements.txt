@@ -1,3 +1,9 @@
 google-search-results
 beautifulsoup4
 transformers
+lxml
+torch
+torchvision
+pandas
+langchain
+tqdm
