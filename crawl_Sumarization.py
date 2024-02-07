@@ -4,33 +4,28 @@ from utils import *
 from tqdm import tqdm
 import argparse
 
+
 parser = argparse.ArgumentParser(description='Crawl and Summarize news from VnExpress')
 parser.add_argument('--nums_clusters', type=int, default=10, help='Number of clusters to crawl')
 args = parser.parse_args()
 
 nums_clusters = args.nums_clusters
 
+
 Web = req.get('https://vnexpress.net')
-
 S = bs(Web.text, 'lxml')
-
 navigator = S.find_all(class_='main-nav')
-
 li_elements = navigator[0].find_all('li') 
 classes = [li.get('class')[0] for li in li_elements][1:-1]
 paths = [li.find_all('a')[0].get('href') for li in li_elements][1:-1]
-
 classes.remove('video')
 paths.remove('https://video.vnexpress.net')
-
-print(classes)
-print(paths)
-
 urls = ['https://vnexpress.net' + content for content in paths]
+
 print(urls)
 
 articles = get_text(urls[18])["List articles' links"]
-print(len(articles))
+# print(len(articles))
 articles[10].find_all('a')
 list_to_crawl = [article.find_all('a')[0].get('href')  for article in articles if article.find_all('a') != []]
 print()
@@ -45,11 +40,5 @@ for i in range(len(pages)):
 
 for clusID in tqdm(range(len(list_class_to_crawl[:nums_clusters]))):
     crawler_Summary([list_class_to_crawl[clusID]], clusID=clusID)
-
-organic_results  = sniper('vnexpress_data_summarization/original/Cluster_001/original/1.txt')
-
-saveClusSummary(organic_results)
-
-for i in range(2,11):
-    organic_results  = sniper(f'vnexpress_data_summarization/original/Cluster_{i:03}/original/1.txt')
-    saveClusSummary(organic_results, ClusID = i)
+    organic_results  = sniper(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original/1.txt')
+    saveClusSummary(organic_results, ClusID = clusID+1)
