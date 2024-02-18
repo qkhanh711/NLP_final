@@ -28,7 +28,7 @@ for i in tqdm(range(1, len(num_cluster)+1)):
         os.makedirs(f"vnexpress_data_summarization/S3_summary/Cluster_{i:03}")
     with open(f"vnexpress_data_summarization/S3_summary/Cluster_{i:03}/0.s3.txt", "w", encoding="utf-8") as f:
         for index in range(len(results0['news'])):
-            if results0["news"][index] == "\n":
+            if results0["news"][index].strip() == "":
                 f.write("\n")
             else:
                 f.write(str(results0["labels"][index]) + "   " + results0["news"][index] + "\n")
