@@ -131,4 +131,43 @@ def saveClusSummary(organic_results, ClusID = 1):
                 f.write(f'Content: N/A\n')
             f.write('\n')
     print("Crawling finished!")
-            
+
+class Labeler():
+    def __init__(self, path_origin, path_summary):
+        self.path_origin = path_origin
+        self.path_summary = path_summary
+        self.labels = []
+        self.news = []
+        self.summary = ""
+    
+    def get_news(self):
+        with open(self.path_origin, 'r') as f:
+            self.news = f.readlines()
+            self.news = self.news[7][9:].split('.')
+            self.news = [sentence.lower() for sentence in self.news]
+        return self.news
+    
+    def get_summary(self):
+        with open(self.path_summary, 'r') as f:
+            self.summary = f.readlines()
+        return self.summary[0].lower()
+    
+    def Labeling(self):
+        counter = 0
+        for sentence in self.news:
+            words = sentence.split(' ')
+            for word in words:
+                if word in self.summary:
+                    counter += 1
+            if counter > 20:
+                self.labels.append(1)
+            else:
+                self.labels.append(0)
+            counter = 0
+        return self.labels
+     
+    def get_all(self):
+        self.news = self.get_news()
+        self.summary = self.get_summary()
+        self.labels =  self.Labeling()
+        return {"news": self.news, "summary": self.summary, "labels": self.labels}

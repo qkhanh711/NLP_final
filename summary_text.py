@@ -30,7 +30,7 @@ for i in tqdm(range(1, len(num_clasters)+1)):
     summaried_texts = summarize_text(path)
     for j in range(len(summaried_texts)):
         summaried_text = summaried_texts[j]
-        if not os.path.exists(f"vnexpress_data_summarization/summary/Cluster_{i:03}/summary"):
-            os.makedirs(f"vnexpress_data_summarization/summary/Cluster_{i:03}/summary")
-        with open(f"vnexpress_data_summarization/summary/Cluster_{i:03}/summary/{j}.gold.txt", "w", encoding="utf-8") as f:
+        if not os.path.exists(f"vnexpress_data_summarization/summary/Cluster_{i:03}"):
+            os.makedirs(f"vnexpress_data_summarization/summary/Cluster_{i:03}")
+        with open(f"vnexpress_data_summarization/summary/Cluster_{i:03}/{j}.gold.txt", "w", encoding="utf-8") as f:
             f.write(summaried_text)
