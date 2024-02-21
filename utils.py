@@ -2,6 +2,13 @@ from bs4 import BeautifulSoup as bs
 import requests as req
 from serpapi import GoogleSearch
 from tqdm import tqdm
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
+serpapi_key = os.environ.get('GOOGLE_SEARCH_API_KEY')
+openai_key = os.environ.get('OPENAP_KEY')
 
 def get_text(url):
     Web = req.get(url)
@@ -30,7 +37,6 @@ def crawler_Clasification(list_to_crawl, clusID=0):
                 content += p.text
         tags = soup.find('meta', {'name': 'keywords'})['content']
         summary = soup.find('meta', {'property': 'og:description'})['content']
-        import os
         if not os.path.exists(f'vnexpress_data_classification/original/Cluster_{clusID+1:03}/original'):
             os.makedirs(f'vnexpress_data_classification/original/Cluster_{clusID+1:03}/original')
         with open(f'vnexpress_data_classification/original/Cluster_{clusID+1:03}/original/{i+1}.txt ', 'w') as f:
@@ -62,7 +68,6 @@ def crawler_Summary(list_class_to_crawl, clusID =0):
                 content += p.text.replace('\n', ' ').strip()
         tags = soup.find('meta', {'name': 'keywords'})['content']
         summary = soup.find('meta', {'property': 'og:description'})['content']
-        import os
         if not os.path.exists(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original'):
             os.makedirs(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original')
         with open(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original/1.txt', 'w') as f:
@@ -86,7 +91,7 @@ def sniper(path):
             "hl": "en",
             "gl": "us",
             "google_domain": "google.com",
-            "api_key": "d229d82c7ffb85675c13b46b7e28d5b2707a64a3a374f5a535a2f83d85ac3c58"
+            "api_key": serpapi_key,
             }
         search = GoogleSearch(params)
         results = search.get_dict()
@@ -96,7 +101,6 @@ def saveClusSummary(organic_results, ClusID = 1):
     print("\nCrawling...")
     for i in tqdm(range(len(organic_results))):
         path = f'vnexpress_data_summarization/original/Cluster_{ClusID:03}/original/{i+2}.txt'
-        # print(path)
         with open(path, 'w') as f:
             f.write(f'Title: {organic_results[i]["title"]}\n')
             f.write(f'Source: {organic_results[i]["source"]}\n')
@@ -133,12 +137,13 @@ def saveClusSummary(organic_results, ClusID = 1):
     print("Crawling finished!")
 
 class Labeler():
-    def __init__(self, path_origin, path_summary):
+    def __init__(self, path_origin, path_summary, threshold=20):
         self.path_origin = path_origin
         self.path_summary = path_summary
         self.labels = []
         self.news = []
         self.summary = ""
+        self.threshold = threshold
     
     def get_news(self):
         with open(self.path_origin, 'r') as f:
@@ -159,7 +164,7 @@ class Labeler():
             for word in words:
                 if word in self.summary:
                     counter += 1
-            if counter > 20:
+            if counter > self.threshold:
                 self.labels.append(1)
             else:
                 self.labels.append(0)
