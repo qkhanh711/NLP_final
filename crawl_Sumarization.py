@@ -6,10 +6,10 @@ import argparse
 
 
 parser = argparse.ArgumentParser(description='Crawl and Summarize news from VnExpress')
-parser.add_argument('--nums_clusters', type=int, default=10, help='Number of clusters to crawl')
+parser.add_argument('--num_clusters', type=int, default=10, help='Number of clusters to crawl')
 args = parser.parse_args()
 
-nums_clusters = args.nums_clusters
+num_clusters = args.num_clusters
 
 
 Web = req.get('https://vnexpress.net')
@@ -38,7 +38,7 @@ for i in range(len(pages)):
     list_to_crawl = [article.find('a')['href'] for article in articles if article.find_all('a') != []]
     list_class_to_crawl.extend(list_to_crawl)
 
-for clusID in tqdm(range(len(list_class_to_crawl[:nums_clusters]))):
+for clusID in tqdm(range(len(list_class_to_crawl[:num_clusters]))):
     crawler_Summary([list_class_to_crawl[clusID]], clusID=clusID)
     organic_results  = sniper(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original/1.txt')
     saveClusSummary(organic_results, ClusID = clusID+1)
