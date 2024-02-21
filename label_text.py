@@ -1,6 +1,13 @@
 import os 
 from utils import Labeler
+import argparse
 from tqdm import tqdm
+
+parser = argparse.ArgumentParser(description='Label news and summary')
+parser.add_argument('--threshold', type=int, default=20, help='Threshold to label')
+
+args = parser.parse_args()
+threshold = args.threshold
 
 def test():
     path_origin  = "./vnexpress_data_summarization/original/Cluster_001/original/1.txt"
@@ -20,9 +27,9 @@ for i in tqdm(range(1, len(num_cluster)+1)):
     path_origin  = f"vnexpress_data_summarization/original/Cluster_{i:03}/original/1.txt"
     path_summary_0 = f"vnexpress_data_summarization/summary/Cluster_{i:03}/0.gold.txt"   
     path_summary_1 = f"vnexpress_data_summarization/summary/Cluster_{i:03}/1.gold.txt"
-    labeler0 = Labeler(path_origin, path_summary_0)
+    labeler0 = Labeler(path_origin, path_summary_0, threshold=threshold)
     results0 = labeler0.get_all()
-    labeler1 = Labeler(path_origin, path_summary_1)
+    labeler1 = Labeler(path_origin, path_summary_1, threshold=threshold)
     results1 = labeler1.get_all()
     if not os.path.exists(f"vnexpress_data_summarization/S3_summary/Cluster_{i:03}"):
         os.makedirs(f"vnexpress_data_summarization/S3_summary/Cluster_{i:03}")

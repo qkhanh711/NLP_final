@@ -2,3 +2,6 @@ vnexpress_data
 vnexpress_data_classification
 __pycache__
 vnexpress_data_summarization
+
+
+.env
