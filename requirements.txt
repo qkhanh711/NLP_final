@@ -8,3 +8,4 @@ pandas
 langchain
 tqdm
 python-dotenv
+rouge-score
