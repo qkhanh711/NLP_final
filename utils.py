@@ -49,7 +49,7 @@ def crawler_Clasification(list_to_crawl, clusID=0):
             f.write(f"Summary: {summary}\n")
             f.write(f"Content: {content}\n\n")
 
-def crawler_Summary(list_class_to_crawl, clusID =0):
+def crawler_Summary(list_class_to_crawl, clusID =0, save_info = True):
     for i in range(len(list_class_to_crawl)):
         url = list_class_to_crawl[i]
         soup = bs(req.get(url).text, 'lxml')
@@ -70,15 +70,16 @@ def crawler_Summary(list_class_to_crawl, clusID =0):
         summary = soup.find('meta', {'property': 'og:description'})['content']
         if not os.path.exists(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original'):
             os.makedirs(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original')
-        with open(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original/1.txt', 'w') as f:
-            f.write(f"Title: {title}\n")
-            f.write(f"Source: {source}\n")
-            f.write(f"Link: {url}\n")
-            f.write(f"Published Date: {published_date}\n")
-            f.write(f"Author: {author}\n")
-            f.write(f"Tags: {tags}\n")
-            f.write(f"Summary: {summary}\n")
-            f.write(f"Content: {content}\n\n")
+        if save_info:
+            with open(f'vnexpress_data_summarization/original/Cluster_{clusID+1:03}/original/1.txt', 'w') as f:
+                f.write(f"Title: {title}\n")
+                f.write(f"Source: {source}\n")
+                f.write(f"Link: {url}\n")
+                f.write(f"Published Date: {published_date}\n")
+                f.write(f"Author: {author}\n")
+                f.write(f"Tags: {tags}\n")
+                f.write(f"Summary: {summary}\n")
+                f.write(f"Content: {content}\n\n")
 
 def sniper(path):
     with open(path, 'r') as f:

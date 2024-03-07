@@ -8,7 +8,7 @@ def get_text(url):
     response = req.get(url)
     soup = bs(response.text, 'lxml')
     articles = soup.find_all('article')
-    return {"HTML code": soup.prettify(), "List articles' links": articles}
+    return {"Soup": soup, "HTML code": soup.prettify(), "List articles' links": articles}
 
 def get_article_details(soup):
     title = soup.find('title').text
