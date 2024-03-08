@@ -19,7 +19,6 @@ st.write("Please input your link to get the summary")
 url = st.text_input("URL Link: ")
 if st.button('Submit'):
     try:
-        
         if not os.path.exists('../vnexpress_data_summarization/inference'):
             os.makedirs('../vnexpress_data_summarization/inference')
         count = len(os.listdir('../vnexpress_data_summarization/inference'))
@@ -61,11 +60,12 @@ if st.button('Submit'):
 
         scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL', 'rougeLsum'], use_stemmer=True)
         scores = scorer.score(summary, output)
-        st.write(f"""Calculating the Rouge score...
-                 Rouge-1: {scores['rouge1'].fmeasure}
-                 Rouge-2: {scores['rouge2'].fmeasure}
-                 Rouge-L: {scores['rougeL'].fmeasure}""")
-        
+        st.write(f"""Calculating the Rouge score...""")
+        with st.expander("Show the Rouge score"):
+            st.write(f"Rouge1: {scores['rouge1'].fmeasure}")
+            st.write(f"Rouge2: {scores['rouge2'].fmeasure}")
+            st.write(f"RougeL: {scores['rougeL'].fmeasure}")
+
         file_path = f"../vnexpress_data_summarization/inference/Cluster_{(count+1):03}/original/{(count+1):03}.txt"
         if not os.path.exists(f"../vnexpress_data_summarization/inference/Cluster_{(count+1):03}/original"):
             os.makedirs(f"../vnexpress_data_summarization/inference/Cluster_{(count+1):03}/original")
