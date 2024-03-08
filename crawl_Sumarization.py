@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as bs
 import requests as req
-from utils import *
+from utils.utils import *
 from tqdm import tqdm
 import argparse
 

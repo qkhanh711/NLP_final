@@ -1,5 +1,5 @@
 import os 
-from utils import Labeler
+from utils.utils import Labeler
 import argparse
 from tqdm import tqdm
 
