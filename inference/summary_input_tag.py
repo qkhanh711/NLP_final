@@ -2,8 +2,8 @@ import streamlit as st
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import sys 
 sys.path.append('../')
-from utils_gpt import get_article_details, save_article_details
-from utils_gpt import get_text
+from utils.utils_gpt import get_article_details, save_article_details
+from utils.utils_gpt import get_text
 import os
 from serpapi import GoogleSearch
 from rouge_score import rouge_scorer
