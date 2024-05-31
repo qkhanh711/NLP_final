@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as bs
 import requests as req
+import sys
+sys.path.append('..')
 from utils.utils import *
 from tqdm import tqdm
 import argparse
